@@ -26,6 +26,7 @@ def registerPage(request):
 			user = form.save()
 			username = form.cleaned_data.get('username')
 
+
 			messages.success(request, 'Account was created for ' + username)
 
 			return redirect('login')
@@ -105,6 +106,8 @@ def accountSettings(request):
 	return render(request, 'accounts/account_settings.html', context)
 
 
+
+
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['admin'])
 def products(request):
@@ -136,13 +139,13 @@ def createOrder(request, pk):
 	#form = OrderForm(initial={'customer':customer})
 	if request.method == 'POST':
 		#print('Printing POST:', request.POST)
-		#form = OrderForm(request.POST)
+		form = OrderForm(request.POST)
 		formset = OrderFormSet(request.POST, instance=customer)
 		if formset.is_valid():
 			formset.save()
 			return redirect('/')
 
-	context = {'formset':formset}
+	context = {'form':formset}
 	return render(request, 'accounts/order_form.html', context)
 
 @login_required(login_url='login')
